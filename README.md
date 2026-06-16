@@ -2,21 +2,21 @@
 
 Small SDL3 raymarcher written in Dudu.
 
-This is a dogfooding repo for using Dudu on a real-ish graphics program. It is
-not meant to be a polished renderer. The point is to stress normal systems-code
-shapes: multiple Dudu source files, SDL3 imports, native C headers, value types,
-operator overloads, threads, a low-resolution framebuffer, and a simple render
-loop.
+This is a test repo for dogfooding Dudu on a real graphics use case. It is not a
+polished renderer. The point is to stress ordinary systems-code shapes: multiple
+Dudu source files, SDL3 imports, native C headers, value types, operator
+overloads, threads, a low-resolution framebuffer, and a simple render loop.
 
 ![raymarch-dd screenshot](assets/screenshot.png)
 
 ## Requirements
 
 - Dudu compiler built at `~/Coding/GameDev/dudu/build/dudu`
-- SDL3 available through the Dudu playground third-party install used by
-  `scripts/run.sh`
+- SDL3 development files
+- `pkg-config`
 
-The script currently sets:
+This repo is intentionally local-machine specific right now. The script points
+at the Dudu checkout and one known SDL3 install path:
 
 ```bash
 PKG_CONFIG_PATH=~/Coding/GameDev/duduplayground/third_party/install/lib/pkgconfig
@@ -47,13 +47,12 @@ That emits C++, builds the binary, and runs it.
 
 This repo found real Dudu issues:
 
-- Native Dudu module imports currently have broken identity/re-export behavior.
-  Importing the same physical module through multiple routes can create
-  duplicate declarations. That is a compiler bug, not a repo design goal.
-- `from module import Name as Alias` did not work for Dudu-native modules in
-  this project.
-- Transitive imports leak more than they should. This repo intentionally keeps
-  a single import chain in a few places until Dudu's module system is fixed.
+- Native Dudu module identity needed work. Importing the same physical module
+  through multiple routes could create duplicate declarations.
+- `from module import Name as Alias` did not work for Dudu-native modules when
+  this repo first hit it.
+- Transitive imports and re-export behavior need a stricter design. User code
+  should not have to care how another module imports its dependencies.
 - VS Code LSP behavior is not reliable enough yet. Go-to-definition,
   find-all-references, and hover can spin or show `Loading...` in this
   workspace.

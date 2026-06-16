@@ -4,9 +4,8 @@ from math_utils import clamp01
 from math_utils import pow_approx
 from math_utils import fmin_v
 from math_utils import mix
-from camera import Vec3
+from vec3 import Vec3
 from camera import Camera
-from camera import build_camera
 
 
 def mix_color(base: Vec3, overlay: Vec3, t: f32) -> Vec3:
@@ -16,9 +15,9 @@ def mix_color(base: Vec3, overlay: Vec3, t: f32) -> Vec3:
         mix(base.z, overlay.z, t),
     )
 
-MAX_STEPS: i32 = 110
-MAX_DIST: f32 = 60.0
-SURFACE_DIST: f32 = 0.0015
+MAX_STEPS: i32 = 128
+MAX_DIST: f32 = 30
+SURFACE_DIST: f32 = 0.0001
 
 
 def sd_sphere(point: Vec3, center: Vec3, radius: f32) -> f32:

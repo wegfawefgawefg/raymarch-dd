@@ -4,7 +4,7 @@ from windowing import setup_monitor_rect
 from windowing import make_16_9_half
 from renderer import RENDER_SCALE
 from renderer import launch_render_workers
-from renderer import build_camera
+from camera import build_camera
 
 
 def main() -> i32:
@@ -75,6 +75,8 @@ def main() -> i32:
     while not quit:
         while SDL_PollEvent(&event):
             if event.type == u32(SDL_EVENT_QUIT):
+                quit = True
+            if event.type == u32(SDL_EVENT_KEY_DOWN) and event.key.key == u32(SDLK_ESCAPE):
                 quit = True
 
         time = f32(SDL_GetTicks()) / f32(1000.0)

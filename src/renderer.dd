@@ -1,8 +1,8 @@
 import cpp "thread" as std
 import c "SDL3/SDL_pixels.h"
 from raytrace import shade_pixel
-from raytrace import Camera
-from raytrace import build_camera
+from camera import Camera
+from camera import build_camera
 
 RENDER_SCALE: i32 = 8
 
