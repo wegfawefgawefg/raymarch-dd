@@ -1,0 +1,14 @@
+name = "raymarch-dd"
+entry = "src/main.dd"
+
+[cxx]
+standard = "c++20"
+
+[include]
+paths = ["/home/vega/Coding/GameDev/duduplayground/third_party/install/include"]
+
+[pkg]
+libs = ["sdl3"]
+
+[build]
+dir = "build"

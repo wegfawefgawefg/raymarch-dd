@@ -1,0 +1,31 @@
+import c "SDL3/SDL.h"
+
+
+class WindowSize:
+    width: i32
+    height: i32
+
+
+def setup_monitor_rect() -> SDL_Rect:
+    rect: SDL_Rect = SDL_Rect(x=0, y=0, w=1920, h=1080)
+    display = SDL_GetPrimaryDisplay()
+    if display != 0:
+        SDL_GetDisplayUsableBounds(display, &rect)
+    return rect
+
+
+def make_16_9_half(rect: SDL_Rect) -> WindowSize:
+    window_w = rect.w / 2
+    window_h = rect.h / 2
+
+    if window_w <= 0:
+        window_w = 960
+    if window_h <= 0:
+        window_h = 540
+
+    if window_w * 9 > window_h * 16:
+        window_w = (window_h * 16) / 9
+    else:
+        window_h = (window_w * 9) / 16
+
+    return WindowSize(width=window_w, height=window_h)

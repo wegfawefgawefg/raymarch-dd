@@ -1,0 +1,32 @@
+def fmin_v(a: f32, b: f32) -> f32:
+    if a < b:
+        return a
+    return b
+
+
+def clamp01(value: f32) -> f32:
+    if value < 0.0:
+        return 0.0
+    if value > 1.0:
+        return 1.0
+    return value
+
+
+def pow_approx(base: f32, power: i32) -> f32:
+    if base <= 0.0:
+        return 0.0
+    if power <= 0:
+        return 1.0
+
+    result: f32 = 1.0
+    i: i32 = 0
+    while i < power:
+        result *= base
+        i += 1
+
+    return result
+
+
+def mix(a: f32, b: f32, t: f32) -> f32:
+    return a * (f32(1.0) - t) + b * t
+

@@ -1,0 +1,36 @@
+import cpp "cmath" as std
+from vec3 import Vec3
+
+
+class Camera:
+    origin: Vec3
+    forward: Vec3
+    right: Vec3
+    up: Vec3
+
+    def set_target(self, target: Vec3, world_up: Vec3):
+        self.forward = target - self.origin
+        self.forward = self.forward.norm()
+        self.right = self.forward.cross(world_up)
+        self.right = self.right.norm()
+        self.up = self.right.cross(self.forward)
+        self.up = self.up.norm()
+
+
+def build_camera(time: f32) -> Camera:
+    orbit = f32(2.9)
+    yaw = time * f32(0.35)
+    origin = Vec3(
+        f32(orbit) * f32(std.cos(yaw)),
+        f32(0.9) + f32(0.15) * f32(std.sin(time * f32(0.17))),
+        f32(orbit) * f32(std.sin(yaw)),
+    )
+    target = Vec3(f32(0.0), f32(0.15), f32(0.0))
+    camera = Camera(
+        origin=origin,
+        forward=Vec3(),
+        right=Vec3(),
+        up=Vec3(),
+    )
+    camera.set_target(target, Vec3(f32(0.0), f32(1.0), f32(0.0)))
+    return camera

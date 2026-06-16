@@ -1,0 +1,45 @@
+import cpp "cmath" as std
+
+
+class Vec3:
+    x: f32
+    y: f32
+    z: f32
+
+    @operator("+")
+    def add(self, other: Vec3) -> Vec3:
+        return Vec3(self.x + other.x, self.y + other.y, self.z + other.z)
+
+    @operator("-")
+    def sub(self, other: Vec3) -> Vec3:
+        return Vec3(self.x - other.x, self.y - other.y, self.z - other.z)
+
+    @operator("*")
+    def mul_scalar(self, scalar: f32) -> Vec3:
+        return Vec3(self.x * scalar, self.y * scalar, self.z * scalar)
+
+    @operator("/")
+    def div_scalar(self, scalar: f32) -> Vec3:
+        return Vec3(self.x / scalar, self.y / scalar, self.z / scalar)
+
+    def dot(self, other: Vec3) -> f32:
+        return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def cross(self, other: Vec3) -> Vec3:
+        return Vec3(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x,
+        )
+
+    def length(self) -> f32:
+        return f32(std.sqrt(self.dot(self)))
+
+    def norm(self) -> Vec3:
+        len = self.length()
+        if len <= 0.0:
+            return self
+        return self / len
+
+    def reflect(self, normal: Vec3) -> Vec3:
+        return self - normal * (f32(2.0) * self.dot(normal))

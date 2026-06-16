@@ -1,0 +1,83 @@
+import cpp "thread" as std
+import c "SDL3/SDL_pixels.h"
+from raytrace import shade_pixel
+from raytrace import Camera
+from raytrace import build_camera
+
+RENDER_SCALE: i32 = 8
+
+THREAD_COUNT: i32 = 8
+
+
+def render_pixel(
+    x: i32,
+    y: i32,
+    render_width: i32,
+    render_height: i32,
+    aspect: f32,
+    camera: Camera,
+    format: *const[SDL_PixelFormatDetails],
+) -> u32:
+    u = (f32(x) / f32(render_width) * f32(2.0) - f32(1.0)) * aspect
+    v = f32(1.0) - (f32(y) / f32(render_height) * f32(2.0))
+    return shade_pixel(u, v, camera, format)
+
+
+def render_worker(
+    render_width: i32,
+    render_height: i32,
+    thread_id: i32,
+    thread_count: i32,
+    aspect: f32,
+    camera: Camera,
+    format: *const[SDL_PixelFormatDetails],
+    framebuffer: &list[u32]
+):
+    y: i32 = thread_id
+    while y < render_height:
+        x: i32 = 0
+        while x < render_width:
+            framebuffer[y * render_width + x] = render_pixel(
+                x,
+                y,
+                render_width,
+                render_height,
+                aspect,
+                camera,
+                format,
+            )
+            x += 1
+        y += thread_count
+
+
+def launch_render_workers(
+    framebuffer: &list[u32],
+    render_w: i32,
+    render_h: i32,
+    aspect: f32,
+    camera: Camera,
+    format: *const[SDL_PixelFormatDetails],
+) -> list[std.thread]:
+    thread_count = THREAD_COUNT
+    if thread_count > render_h:
+        thread_count = render_h
+    if thread_count < 1:
+        thread_count = 1
+
+    threads: list[std.thread] = []
+    i: i32 = 0
+    while i < thread_count:
+        threads.append(std.thread(
+            render_worker,
+            render_w,
+            render_h,
+            i,
+            thread_count,
+            aspect,
+            camera,
+            format,
+            std.ref(framebuffer),
+        ))
+        i += 1
+
+    return threads
