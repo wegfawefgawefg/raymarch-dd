@@ -16,8 +16,8 @@ def render_pixel(
     camera: Camera,
     format: *const[SDL_PixelFormatDetails],
 ) -> u32:
-    u = (f32(x) / f32(render_width) * f32(2.0) - f32(1.0)) * aspect
-    v = f32(1.0) - (f32(y) / f32(render_height) * f32(2.0))
+    u = (f32(x) / f32(render_width) * 2.0 - 1.0) * aspect
+    v = 1.0 - (f32(y) / f32(render_height) * 2.0)
     return shade_pixel(u, v, camera, format)
 
 

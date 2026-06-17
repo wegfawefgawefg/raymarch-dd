@@ -42,4 +42,4 @@ class Vec3:
         return self / len
 
     def reflect(self, normal: Vec3) -> Vec3:
-        return self - normal * (f32(2.0) * self.dot(normal))
+        return self - normal * (2.0 * self.dot(normal))
