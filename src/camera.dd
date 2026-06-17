@@ -1,5 +1,5 @@
-import cpp "cmath" as std
 from vec3 import Vec3
+import cpp "cmath" as std
 
 
 class Camera:

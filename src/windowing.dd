@@ -7,7 +7,7 @@ class WindowSize:
 
 
 def setup_monitor_rect() -> SDL_Rect:
-    rect: SDL_Rect = SDL_Rect(x=0, y=0, w=1920, h=1080)
+    rect = SDL_Rect(x=0, y=0, w=1920, h=1080)
     display = SDL_GetPrimaryDisplay()
     if display != 0:
         SDL_GetDisplayUsableBounds(display, &rect)

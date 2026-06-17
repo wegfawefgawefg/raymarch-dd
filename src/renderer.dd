@@ -1,13 +1,11 @@
-import cpp "thread" as std
-import c "SDL3/SDL_pixels.h"
-from raytrace import shade_pixel
 from camera import Camera
 from camera import build_camera
+from raytrace import shade_pixel
+import c "SDL3/SDL_pixels.h"
+import cpp "thread" as std
 
 RENDER_SCALE: i32 = 8
-
 THREAD_COUNT: i32 = 8
-
 
 def render_pixel(
     x: i32,
@@ -33,10 +31,8 @@ def render_worker(
     format: *const[SDL_PixelFormatDetails],
     framebuffer: &list[u32]
 ):
-    y: i32 = thread_id
-    while y < render_height:
-        x: i32 = 0
-        while x < render_width:
+    for y in range(thread_id, render_height, thread_count):
+        for x in range(render_width):
             framebuffer[y * render_width + x] = render_pixel(
                 x,
                 y,
@@ -46,8 +42,6 @@ def render_worker(
                 camera,
                 format,
             )
-            x += 1
-        y += thread_count
 
 
 def launch_render_workers(
@@ -65,8 +59,7 @@ def launch_render_workers(
         thread_count = 1
 
     threads: list[std.thread] = []
-    i: i32 = 0
-    while i < thread_count:
+    for i in range(thread_count):
         threads.append(std.thread(
             render_worker,
             render_w,
@@ -78,6 +71,5 @@ def launch_render_workers(
             format,
             std.ref(framebuffer),
         ))
-        i += 1
 
     return threads
