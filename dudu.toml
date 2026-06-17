@@ -9,6 +9,7 @@ paths = ["/home/vega/Coding/GameDev/duduplayground/third_party/install/include"]
 
 [pkg]
 libs = ["sdl3"]
+paths = ["/home/vega/Coding/GameDev/duduplayground/third_party/install/lib/pkgconfig"]
 
 [build]
 dir = "build"
