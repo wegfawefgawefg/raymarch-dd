@@ -30,7 +30,7 @@ def main() -> i32:
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED)
 
-    renderer_api = SDL_CreateRenderer(window, "")
+    renderer_api = SDL_CreateRenderer(window, None)
     if renderer_api == None:
         SDL_DestroyWindow(window)
         SDL_Quit()
