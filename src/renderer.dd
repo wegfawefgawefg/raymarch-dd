@@ -4,8 +4,8 @@ from raytrace import shade_pixel
 import c "SDL3/SDL_pixels.h"
 import cpp "thread" as std
 
-RENDER_SCALE: i32 = 8
-THREAD_COUNT: i32 = 8
+RENDER_SCALE: i32 = 4
+THREAD_COUNT: i32 = 32
 
 def render_pixel(
     x: i32,

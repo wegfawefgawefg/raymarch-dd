@@ -5,6 +5,7 @@ from math_utils import mix
 from math_utils import pow_approx
 from vec3 import Vec3
 import c "SDL3/SDL_pixels.h"
+import c "SDL3/SDL_timer.h"
 import cpp "cmath" as std
 
 
@@ -16,17 +17,18 @@ def mix_color(base: Vec3, overlay: Vec3, t: f32) -> Vec3:
     )
 
 MAX_STEPS: i32 = 128
-MAX_DIST: f32 = 30
+MAX_DIST: f32 = 8
 SURFACE_DIST: f32 = 0.0001
 
 
 def sd_sphere(point: Vec3, center: Vec3, radius: f32) -> f32:
+    t: f32 = f32(SDL_GetTicks() / 100.0)
     return (point - center).length() - radius
-
+        + f32(std.sin(point.x * 20.0 + t)) * 0.5
+        + f32(std.cos(point.y * 20.0 + t)) * 0.5
 
 def sd_floor(point: Vec3) -> f32:
     return point.y + 1.0
-
 
 def scene_sdf(point: Vec3) -> f32:
     center = Vec3(0.0, 0.35, 0.0)
@@ -88,8 +90,8 @@ def material_reflectivity(point: Vec3) -> f32:
     floor_distance = sd_floor(point)
     sphere_distance = sd_sphere(point, Vec3(0.0, 0.35, 0.0), 1.0)
     if sphere_distance < floor_distance:
-        return 0.22
-    return 0.04
+        return 0.8
+    return 0.9
 
 
 def shade_direct(point: Vec3, normal: Vec3, view_dir: Vec3) -> Vec3:

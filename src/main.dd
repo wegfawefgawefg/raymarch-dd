@@ -1,6 +1,7 @@
 from camera import build_camera
 from renderer import RENDER_SCALE
 from renderer import launch_render_workers
+from text import draw_fps
 from windowing import make_16_9_half
 from windowing import setup_monitor_rect
 import c "SDL3/SDL.h"
@@ -71,6 +72,9 @@ def main() -> i32:
     )
 
     event: SDL_Event
+    fps = 0
+    fps_frames = 0
+    fps_start_ms = SDL_GetTicks()
     quit = False
     while not quit:
         while SDL_PollEvent(&event):
@@ -98,7 +102,16 @@ def main() -> i32:
         SDL_SetRenderDrawColor(renderer_api, 10, 12, 16, 255)
         SDL_RenderClear(renderer_api)
         SDL_RenderTexture(renderer_api, render_texture, None, &render_rect)
+        draw_fps(renderer_api, fps)
         SDL_RenderPresent(renderer_api)
+
+        fps_frames += 1
+        fps_now_ms = SDL_GetTicks()
+        fps_elapsed_ms = fps_now_ms - fps_start_ms
+        if fps_elapsed_ms >= 250:
+            fps = i32((u64(fps_frames) * u64(1000)) / fps_elapsed_ms)
+            fps_frames = 0
+            fps_start_ms = fps_now_ms
 
     SDL_DestroyTexture(render_texture)
     SDL_DestroyRenderer(renderer_api)
