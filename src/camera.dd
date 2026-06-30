@@ -8,7 +8,7 @@ class Camera:
     right: Vec3
     up: Vec3
 
-    def set_target(self, target: &const[Vec3], world_up: &const[Vec3]):
+    def set_target(self, target: Vec3, world_up: Vec3):
         self.forward = target - self.origin
         self.forward = self.forward.norm()
         self.right = self.forward.cross(world_up)
